@@ -15,7 +15,7 @@
 | T04 | Mirada, rebote y Y-sort | M1 | Completado |
 | C01 | Flujo del daño | M2 | Completado |
 | T05 | Espada: pivote, hitbox y animación | M2 | Completado |
-| T06 | Input de ataque y cooldown | M2 | No iniciado |
+| T06 | Input de ataque y cooldown | M2 | Completado |
 | T07 | Escena `Enemy`, vida y muerte | M2 | No iniciado |
 | T08 | Flash y knockback | M2 | No iniciado |
 | T09 | Persecución y máquina de estados | M3 | No iniciado |
@@ -123,5 +123,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** la escena quedó guardada con valores de reposo equivocados (rotación 30°, `monitoring = true`) por el `RESET`; se corrigió.
 - **Dudas pendientes o conceptos por reforzar:** `set_deferred` no hizo falta aquí (la animación cambia `monitoring` fuera de la física); se practica en T14. El disparo temporal con `is_action_pressed` se reemplaza en T06.
 - **Verificación o evidencia:** `player.tscn` y `player.gd` revisados; probado en el editor con el `Speed Scale` bajo y la pestaña Remoto.
+
+### T06 — Input de ataque y cooldown
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:** diferencia entre `is_action_pressed` (cada frame) e `is_action_just_pressed` (solo el frame de la pulsación); el cooldown como estado de un `Timer` (`is_stopped()`).
+- **Qué implementé por mi cuenta:** acción `attack` (clic izquierdo), nodo `AttackCooldown` (`one_shot`, 0.4 s), función `attack()` que reproduce la animación e inicia el `Timer`, y separé `flip_player` y `apply_bounce_animation`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** empecé con `is_action_pressed`, que encadenaba golpes al mantener el clic; se cambió a `just_pressed`.
+- **Dudas pendientes o conceptos por reforzar:** tipar los parámetros de `flip_player` y `apply_bounce_animation`.
+- **Verificación o evidencia:** `player.gd` revisado en disco; probado en el editor (un clic, un golpe; mantener no repite; el cooldown bloquea).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*

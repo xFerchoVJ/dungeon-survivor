@@ -118,3 +118,7 @@ shape = SubResource("RectangleShape2D_dtglo")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=974935627]
 libraries/ = SubResource("AnimationLibrary_qlg0r")
+
+[node name="AttackCooldown" type="Timer" parent="." unique_id=827555210]
+wait_time = 0.4
+one_shot = true
