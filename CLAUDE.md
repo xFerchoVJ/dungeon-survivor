@@ -47,6 +47,39 @@ Soy una persona **visual**: entiendo mejor viendo las cosas.
 - El mapa de qué tile es cada cosa (héroe, enemigos, espada, paredes, puerta) se completa en D01.
 - Verifica en la imagen las medidas reales antes de dar números exactos.
 
+#### Mapa de tiles de `tilemap_packed.png` (D01)
+Medidas verificadas: 192x176 px = 12 columnas x 11 filas de 16x16. Las coordenadas son `(columna, fila)` desde `(0, 0)` arriba a la izquierda; son las que se usan como `atlas_coords` (`Vector2i`) en el `TileSet`. El número de `tile_XXXX.png` es `fila * 12 + columna`. Identificados a ojo sobre una ampliación de la hoja; no están probados en el editor.
+
+| Cosa | Coordenada `(col, fila)` | `tile_` | Notas |
+|---|---|---|---|
+| Héroe (candidato principal) | `(1, 8)` | 0097 | Caballero con visera. |
+| Héroe (alternativas) | `(0, 8)`, `(2, 8)` | 0096, 0098 | Caballero con casco cerrado / guerrero de pelo castaño. |
+| Otros personajes | `(0..4, 7)`, `(3, 8)`, `(4, 8)` | 0084–0088, 0099, 0100 | Mago morado, aldeanos, vikingo, mujer, anciano. |
+| Enemigo: slime verde | `(0, 9)` | 0108 | Candidato a enemigo básico. |
+| Enemigo: cíclope | `(1, 9)` | 0109 | Más grande, buen "fuerte". |
+| Enemigo: cangrejo rojo | `(2, 9)` | 0110 | Candidato al embestidor (T20). |
+| Enemigo: encapuchado / bandido | `(3, 9)`, `(4, 9)` | 0111, 0112 | |
+| Enemigo: murciélago / fantasma / araña | `(0, 10)`, `(1, 10)`, `(2, 10)` | 0120, 0121, 0122 | |
+| Criaturas poco claras | `(3, 10)`, `(4, 10)` | 0123, 0124 | Parecen serpiente y escorpión; confirmar en el editor. |
+| Espada (candidata) | `(8, 8)` | 0104 | Espada recta de hoja gris. |
+| Otras armas | `(7, 8)`, `(9, 8)`, `(10, 8)`, `(11, 8)` | 0103, 0105, 0106, 0107 | Daga, espada corta, espada ancha, espada de empuñadura roja. |
+| Armas pesadas | `(9, 9)`, `(10, 9)`, `(11, 9)` | 0117, 0118, 0119 | Martillo y hachas. |
+| Escudos | `(5, 8)`, `(6, 8)` | 0101, 0102 | |
+| Poción roja (vida) | `(7, 9)` | 0115 | No hay corazón en la hoja; sirve la poción roja. |
+| Otras pociones | `(5, 9)`, `(6, 9)`, `(8, 9)` | 0113, 0114, 0116 | Vacía, verde, azul. |
+| Cofres | `(5, 7)`, `(6, 7)`, `(7, 7)`, mímico `(8, 7)` | 0089–0092 | |
+| Suelo arena (principal) | `(0, 4)` | 0048 | Liso. Variantes con detalle: `(1, 4)`, `(2..5, 4)` (0049–0053). |
+| Suelo rojizo | `(0, 0)`, `(1, 0)`, `(1, 1)` | 0000, 0001, 0013 | Liso. Con escombros: `(0, 1)`, `(0, 2)` (0012, 0024). |
+| Pared de ladrillo | `(4, 3)` | 0040 | Lisa. Con ventana: `(4, 2)` (0028). |
+| Relleno de pared de piedra | `(9, 4)`, `(10, 4)`, `(11, 4)` | 0057–0059 | `(10, 4)` es la versión vertical. |
+| Decoración de pared | `(7, 0)`, `(8, 0)`, `(7, 1)`, `(8, 1)`, `(5, 2)` | 0007, 0008, 0019, 0020, 0029 | Candelabros, gárgolas y escudo rojo. |
+| Marco de cuarto 2x2 | `(4, 0)`, `(5, 0)`, `(4, 1)`, `(5, 1)` | 0004, 0005, 0016, 0017 | Borde de piedra con interior rojizo; decidir en T02 si sirve para el perímetro. |
+| Puerta cerrada (1 tile) | `(9, 3)` | 0045 | Madera con manija. Doble: `(10, 3)` + `(11, 3)` (0046, 0047). |
+| Puerta abierta (1 tile) | `(9, 0)` | 0009 | Doble: `(10, 0)` + `(11, 0)` (0010, 0011). |
+| Puerta, estados intermedios | `(9, 1)`, `(9, 2)` | 0021, 0033 | Entreabierta; útil si se anima con `Tween`. |
+
+Las puertas vienen con su marco de pared oscuro azulado; combinan mejor con la pared de piedra que con el suelo rojizo. Qué suelo y qué pared usar lo decides tú en T02.
+
 ## Clasificación del trabajo
 **A. Aprendizaje: lo implemento yo.** Movimiento, ataque, hitbox/hurtbox, daño y vida, comportamiento de enemigos, reglas de cuartos y puertas, estado del juego, mejoras, victoria y derrota, interacciones de gameplay.
 - No escribas ni modifiques la implementación.

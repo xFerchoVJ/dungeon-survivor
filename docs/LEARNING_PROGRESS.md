@@ -7,8 +7,8 @@
 ## Resumen
 | ID | Tarea | Fase | Estado |
 |---|---|---|---|
-| T01 | Git, pixel art y layers con nombre | M0 | No iniciado |
-| D01 | Mapa de assets (delegada) | M0 | No iniciado |
+| T01 | Git, pixel art y layers con nombre | M0 | Completado |
+| D01 | Mapa de assets (delegada) | M0 | En progreso |
 | T02 | `TileSet` 16x16 con colisión de paredes | M0 | No iniciado |
 | D02 | Cuarto de pruebas (delegada) | M0 | No iniciado |
 | T03 | Escena `Player` y movimiento | M1 | No iniciado |
@@ -59,4 +59,14 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - Por qué `set_deferred` al cambiar propiedades físicas dentro de una señal: T05 y T14.
 - Explicar con mis palabras `delta`, `is_on_floor()` y `RayCast2D`: no aplican a este juego; quedan como repaso opcional.
 
-*(Las secciones por tarea se añaden aquí conforme se trabajan.)*
+### T01 — Git, pixel art y layers con nombre
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:**
+- **Qué implementé por mi cuenta:** configuración de viewport 320x180 con override 1280x720, filtro Nearest, layers de física con nombre (`world`, `player`, `enemy`, `player_hitbox`, `enemy_hitbox`), carpetas `scenes/`, `scripts/`, `ui/`, `git init`.
+- **Trabajo delegado:** ampliación de `.gitignore` y primer commit (`b889a6a`).
+- **Dificultades:** las layers no estaban guardadas en `project.godot` en la primera revisión; se guardaron después.
+- **Dudas pendientes o conceptos por reforzar:**
+- **Verificación o evidencia:** `project.godot` revisado (sección `[layer_names]`); commit `b889a6a`.
+
+*(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
