@@ -122,3 +122,5 @@ libraries/ = SubResource("AnimationLibrary_qlg0r")
 [node name="AttackCooldown" type="Timer" parent="." unique_id=827555210]
 wait_time = 0.4
 one_shot = true
+
+[connection signal="area_entered" from="SwordPivot/Sword/Hitbox" to="." method="_on_hitbox_area_entered"]

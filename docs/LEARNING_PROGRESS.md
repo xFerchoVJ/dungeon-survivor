@@ -16,7 +16,7 @@
 | C01 | Flujo del daño | M2 | Completado |
 | T05 | Espada: pivote, hitbox y animación | M2 | Completado |
 | T06 | Input de ataque y cooldown | M2 | Completado |
-| T07 | Escena `Enemy`, vida y muerte | M2 | No iniciado |
+| T07 | Escena `Enemy`, vida y muerte | M2 | Completado |
 | T08 | Flash y knockback | M2 | No iniciado |
 | T09 | Persecución y máquina de estados | M3 | No iniciado |
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | No iniciado |
@@ -133,5 +133,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** empecé con `is_action_pressed`, que encadenaba golpes al mantener el clic; se cambió a `just_pressed`.
 - **Dudas pendientes o conceptos por reforzar:** tipar los parámetros de `flip_player` y `apply_bounce_animation`.
 - **Verificación o evidencia:** `player.gd` revisado en disco; probado en el editor (un clic, un golpe; mantener no repite; el cooldown bloquea).
+
+### T07 — Escena `Enemy`, vida y muerte
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:** hurtbox pasiva (`Area2D` con layer `enemy` y mask 0); `area_entered` entrega la hurtbox, no el cuerpo, así que el dueño es su padre; `class_name Enemy` para usar `is Enemy`.
+- **Qué implementé por mi cuenta:** `scenes/enemy.tscn` (cuerpo, sprite del cíclope, hurtbox), `scripts/enemy.gd` con `max_health`, `health` y `take_damage()`, `damage` exportado en `Player`, manejador `_on_hitbox_area_entered` conectado a la hitbox de la espada, enemigo estático en `test_room.tscn`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** tipar `_ready()` con `-> void` y la variable del dueño de la hurtbox; quitar el `print` de prueba; `position_hitter` se usa en T08.
+- **Verificación o evidencia:** `enemy.tscn`, `enemy.gd` y `player.gd` revisados; probado en el editor (2 golpes con `damage = 50` y `max_health = 100`).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*

@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var attack_cooldown: Timer = $AttackCooldown
 
 @export var speed: float = 60
+@export var damage: float = 50.0
 
 var facing: Vector2 = Vector2.DOWN
 var bounce_time: float = 0.0
@@ -60,3 +61,9 @@ func apply_bounce_animation(direction: Vector2, delta: float) -> void:
 			0.0,
 			5.0 * delta
 		)
+
+
+func _on_hitbox_area_entered(area: Area2D) -> void:
+	var owner_node: Node = area.get_parent()
+	if owner_node is Enemy:
+		owner_node.take_damage(damage, global_position)

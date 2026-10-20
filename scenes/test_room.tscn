@@ -2,6 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://8bjnncahm384" path="res://scenes/tileset.tres" id="1_tileset"]
 [ext_resource type="PackedScene" uid="uid://c6xfvuy3n28a7" path="res://scenes/player.tscn" id="2_4adyp"]
+[ext_resource type="PackedScene" uid="uid://3d0vqewg5uyt" path="res://scenes/enemy.tscn" id="3_h8avn"]
 
 [node name="TestRoom" type="Node2D" unique_id=1686601554]
 y_sort_enabled = true
@@ -16,3 +17,6 @@ tile_set = ExtResource("1_tileset")
 
 [node name="Player" parent="." unique_id=311979828 instance=ExtResource("2_4adyp")]
 position = Vector2(44, 84)
+
+[node name="Enemy" parent="." unique_id=99216161 instance=ExtResource("3_h8avn")]
+position = Vector2(108, 84)
