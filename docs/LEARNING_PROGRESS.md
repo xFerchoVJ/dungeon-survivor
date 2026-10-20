@@ -17,7 +17,7 @@
 | T05 | Espada: pivote, hitbox y animación | M2 | Completado |
 | T06 | Input de ataque y cooldown | M2 | Completado |
 | T07 | Escena `Enemy`, vida y muerte | M2 | Completado |
-| T08 | Flash y knockback | M2 | No iniciado |
+| T08 | Flash y knockback | M2 | Completado |
 | T09 | Persecución y máquina de estados | M3 | No iniciado |
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | No iniciado |
 | T11 | HUD de vida | M3 | No iniciado |
@@ -143,5 +143,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** tipar `_ready()` con `-> void` y la variable del dueño de la hurtbox; quitar el `print` de prueba; `position_hitter` se usa en T08.
 - **Verificación o evidencia:** `enemy.tscn`, `enemy.gd` y `player.gd` revisados; probado en el editor (2 golpes con `damage = 50` y `max_health = 100`).
+
+### T08 — Flash y knockback
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:** `Vector2.move_toward` para frenar el empuje; flash con `Tween` sobre `modulate`, cancelando el tween anterior para que el color no quede pegado; `move_and_slide()` en el enemigo para respetar las paredes.
+- **Qué implementé por mi cuenta:** `knockback_strength` y `knockback_friction` exportados, `_physics_process` que frena `velocity`, empuje en dirección contraria al atacante con `position_hitter`, flash rojo de 0.2 s con `apply_damage_tween()`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** el `_physics_process` actual frena `velocity` siempre; en T09 convivirá con la persecución mediante el estado `HURT`. El flash es un tinte rojo; probar un color con valores mayores que 1 si se quiere un destello.
+- **Verificación o evidencia:** `enemy.gd` revisado; probado en el editor (empuje desde varios lados, paredes, golpes seguidos).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
