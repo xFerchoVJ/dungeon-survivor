@@ -12,7 +12,7 @@
 | T02 | `TileSet` 16x16 con colisión de paredes | M0 | Completado |
 | D02 | Cuarto de pruebas (delegada) | M0 | Completado |
 | T03 | Escena `Player` y movimiento | M1 | Completado |
-| T04 | Mirada, rebote y Y-sort | M1 | No iniciado |
+| T04 | Mirada, rebote y Y-sort | M1 | Completado |
 | C01 | Flujo del daño | M2 | No iniciado |
 | T05 | Espada: pivote, hitbox y animación | M2 | No iniciado |
 | T06 | Input de ataque y cooldown | M2 | No iniciado |
@@ -98,5 +98,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** la colisión de 12x15 es muy ajustada; si se atora en huecos de 1 tile (puertas), reducirla a ~10x10 en los pies.
 - **Verificación o evidencia:** revisión de `player.tscn`, `player.gd` y `project.godot`; probado en `test_room.tscn`.
+
+### T04 — Mirada, rebote y Y-sort
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:**
+- **Qué implementé por mi cuenta:** `facing` que conserva la última dirección no nula, `flip_h` según `direction.x`, rebote procedural del `Sprite2D` con `sin` y asentamiento con `move_toward`, `y_sort_enabled` en `TestRoom`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** amplitud de 0.5 px (el pixel art no dibuja medios píxeles; probar 1 px); el rebote depende de `direction` y no de la velocidad real; reiniciar `bounce_time` al parar.
+- **Verificación o evidencia:** revisión de `player.gd` y `test_room.tscn`; probado en el editor.
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
