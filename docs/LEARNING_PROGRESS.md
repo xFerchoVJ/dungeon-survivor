@@ -14,7 +14,7 @@
 | T03 | Escena `Player` y movimiento | M1 | Completado |
 | T04 | Mirada, rebote y Y-sort | M1 | Completado |
 | C01 | Flujo del daño | M2 | Completado |
-| T05 | Espada: pivote, hitbox y animación | M2 | No iniciado |
+| T05 | Espada: pivote, hitbox y animación | M2 | Completado |
 | T06 | Input de ataque y cooldown | M2 | No iniciado |
 | T07 | Escena `Enemy`, vida y muerte | M2 | No iniciado |
 | T08 | Flash y knockback | M2 | No iniciado |
@@ -113,5 +113,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Estado:** Completado (confirmado por mí el 2026-10-19)
 - **Decisiones:** solo la hitbox escanea (`area_entered`); la vida vive en el cuerpo con `take_damage()`; quien ataca decide su daño; un golpe cuenta una vez porque la hitbox solo está activa durante el golpe.
 - **Verificación o evidencia:** diagrama y tabla de layers/masks en `docs/TASK_BACKLOG.md`.
+
+### T05 — Espada: pivote, hitbox y animación
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Fechas:** inicio / fin 2026-10-19
+- **Qué aprendí:** `reset_on_save` de `AnimationPlayer` aplica la animación `RESET` a los nodos al guardar, así que `RESET` es la fuente de verdad de los valores de reposo.
+- **Qué implementé por mi cuenta:** `SwordPivot` que rota con `facing.angle()`, `Sword` con sprite y `Hitbox` (layer `player_hitbox`, mask `enemy`), animación `attack` de 0.25 s con pistas de `rotation`, `visible` y `monitoring` (activa de 0.05 a 0.18 s), disparo temporal con `ui_accept`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** la escena quedó guardada con valores de reposo equivocados (rotación 30°, `monitoring = true`) por el `RESET`; se corrigió.
+- **Dudas pendientes o conceptos por reforzar:** `set_deferred` no hizo falta aquí (la animación cambia `monitoring` fuera de la física); se practica en T14. El disparo temporal con `is_action_pressed` se reemplaza en T06.
+- **Verificación o evidencia:** `player.tscn` y `player.gd` revisados; probado en el editor con el `Speed Scale` bajo y la pestaña Remoto.
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*

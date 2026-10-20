@@ -2,9 +2,86 @@
 
 [ext_resource type="Texture2D" uid="uid://cviwcx2ohfspp" path="res://assets/Tilemap/tilemap_packed.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://s8bv7rtedy68" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://bcxvarae5rucu" path="res://assets/Tiles/tile_0106.png" id="3_qhqgy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u0ya7"]
 size = Vector2(12, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtglo"]
+size = Vector2(8, 11)
+
+[sub_resource type="Animation" id="Animation_qhqgy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SwordPivot/Sword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5707964]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SwordPivot/Sword/Hitbox:monitoring")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_dqkch"]
+resource_name = "attack"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SwordPivot/Sword:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.12, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.5235988, 2.6179938, 1.5707964]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SwordPivot/Sword:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SwordPivot/Sword/Hitbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.050812706, 0.18),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qlg0r"]
+_data = {
+&"RESET": SubResource("Animation_qhqgy"),
+&"attack": SubResource("Animation_dqkch")
+}
 
 [node name="Player" type="CharacterBody2D" unique_id=311979828]
 collision_layer = 2
@@ -18,3 +95,26 @@ region_rect = Rect2(16, 128, 16, 16)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1081640927]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_u0ya7")
+
+[node name="SwordPivot" type="Node2D" parent="." unique_id=1475263937]
+
+[node name="Sword" type="Node2D" parent="SwordPivot" unique_id=936003333]
+visible = false
+position = Vector2(10, 0)
+rotation = 1.5707964
+
+[node name="Sprite2D" type="Sprite2D" parent="SwordPivot/Sword" unique_id=1335337982]
+position = Vector2(-1.7484555e-07, -4)
+texture = ExtResource("3_qhqgy")
+
+[node name="Hitbox" type="Area2D" parent="SwordPivot/Sword" unique_id=1449979068]
+collision_layer = 8
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordPivot/Sword/Hitbox" unique_id=1179165329]
+position = Vector2(1.1368684e-13, -6.5)
+shape = SubResource("RectangleShape2D_dtglo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=974935627]
+libraries/ = SubResource("AnimationLibrary_qlg0r")

@@ -2,6 +2,8 @@ class_name Player
 extends CharacterBody2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var sword_pivot: Node2D = $SwordPivot
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var speed: float = 60
 
@@ -23,6 +25,11 @@ func _physics_process(delta: float) -> void:
 	# Guardar la última dirección válida
 	if direction != Vector2.ZERO:
 		facing = direction
+	
+	sword_pivot.rotation = facing.angle()
+	
+	if Input.is_action_pressed("ui_accept"):
+		animation_player.play("attack")
 	
 	# Voltear el sprite horizontalmente
 	if direction.x < 0:
