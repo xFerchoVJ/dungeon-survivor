@@ -13,7 +13,7 @@
 | D02 | Cuarto de pruebas (delegada) | M0 | Completado |
 | T03 | Escena `Player` y movimiento | M1 | Completado |
 | T04 | Mirada, rebote y Y-sort | M1 | Completado |
-| C01 | Flujo del daño | M2 | No iniciado |
+| C01 | Flujo del daño | M2 | Completado |
 | T05 | Espada: pivote, hitbox y animación | M2 | No iniciado |
 | T06 | Input de ataque y cooldown | M2 | No iniciado |
 | T07 | Escena `Enemy`, vida y muerte | M2 | No iniciado |
@@ -108,5 +108,10 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** amplitud de 0.5 px (el pixel art no dibuja medios píxeles; probar 1 px); el rebote depende de `direction` y no de la velocidad real; reiniciar `bounce_time` al parar.
 - **Verificación o evidencia:** revisión de `player.gd` y `test_room.tscn`; probado en el editor.
+
+### C01 — Flujo del daño (compartida)
+- **Estado:** Completado (confirmado por mí el 2026-10-19)
+- **Decisiones:** solo la hitbox escanea (`area_entered`); la vida vive en el cuerpo con `take_damage()`; quien ataca decide su daño; un golpe cuenta una vez porque la hitbox solo está activa durante el golpe.
+- **Verificación o evidencia:** diagrama y tabla de layers/masks en `docs/TASK_BACKLOG.md`.
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*

@@ -51,6 +51,45 @@
 - **Objetivo:** decidir juntos quién detecta el golpe, quién decide el daño y quién reacciona (hitbox/hurtbox, señales, layers y masks).
 - **Aceptación:** un diagrama ASCII del flujo y la tabla de layers/masks acordados, anotados en este archivo.
 - **Errores comunes:** mezclar hitbox y hurtbox en el mismo `Area2D`.
+- **Decisiones acordadas (2026-10-19):**
+  1. Solo la hitbox escanea (`area_entered`); la hurtbox es pasiva.
+  2. La vida vive en el cuerpo (`Player`, `Enemy`) con un método `take_damage()`; no hay nodo `Health` aparte.
+  3. Quien ataca decide su daño: el jugador tiene el valor (así las mejoras de T19 lo modifican) y lo pasa al llamar `take_damage()`. El enemigo hace lo mismo con su propio daño.
+  4. Un golpe cuenta una sola vez porque la hitbox solo está activa durante el golpe y `area_entered` se emite una vez por hurtbox. No se usa lista de enemigos golpeados salvo que las pruebas muestren golpes dobles.
+
+  ```
+  Jugador ataca a un enemigo
+  ────────────────────────────────────────────────────────
+  Sword/Hitbox (Area2D)                Enemy/Hurtbox (Area2D)
+    layer: player_hitbox (4)             layer: enemy (3)
+    mask:  enemy (3)                     mask:  0 (pasiva)
+          │
+          │ area_entered(area)       ← detecta la hitbox
+          ▼
+    busca el cuerpo dueño de la hurtbox (su padre)
+    cuerpo.take_damage(daño_del_jugador, posición_del_atacante)
+          │
+          ▼
+    Enemy (CharacterBody2D)
+       • resta vida              ← decide el cuerpo
+       • flash + knockback       ← reacciona el cuerpo
+       • queue_free() si vida <= 0
+
+  Enemigo toca al jugador: mismo flujo con
+    Enemy/Hitbox  (layer enemy_hitbox 5, mask player 2)  →  Player/Hurtbox (layer player 2, mask 0)
+  ```
+
+  | Nodo | Layer (soy) | Mask (veo) |
+  |---|---|---|
+  | Paredes (`TileMapLayer`) | `world` (1) | — |
+  | `Player` (cuerpo) | `player` (2) | `world` (1) |
+  | `Player/Hurtbox` | `player` (2) | 0 |
+  | `Enemy` (cuerpo) | `enemy` (3) | `world` (1) |
+  | `Enemy/Hurtbox` | `enemy` (3) | 0 |
+  | Espada (hitbox) | `player_hitbox` (4) | `enemy` (3) |
+  | Contacto del enemigo (hitbox) | `enemy_hitbox` (5) | `player` (2) |
+
+  Los cuerpos de jugador y enemigo no se bloquean entre sí (sus máscaras solo incluyen `world`); el daño lo gestionan solo las `Area2D`. Las hitboxes usan `area_entered`, así que ignoran los cuerpos que comparten su layer.
 
 ### T05 — Espada: pivote, hitbox y animación
 - **Tipo:** A · **Est.:** 60 min · **Depende de:** C01
