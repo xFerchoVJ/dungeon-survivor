@@ -1,0 +1,27 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Exportación y compilaciones
+export_presets.cfg
+/build/
+*.translation
+
+# Mono / .NET (por si acaso)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Claude Code (configuración local)
+.claude/settings.local.json
