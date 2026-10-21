@@ -18,7 +18,7 @@
 | T06 | Input de ataque y cooldown | M2 | Completado |
 | T07 | Escena `Enemy`, vida y muerte | M2 | Completado |
 | T08 | Flash y knockback | M2 | Completado |
-| T09 | Persecución y máquina de estados | M3 | No iniciado |
+| T09 | Persecución y máquina de estados | M3 | Completado |
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | No iniciado |
 | T11 | HUD de vida | M3 | No iniciado |
 | T12 | Muerte y game over | M3 | No iniciado |
@@ -153,5 +153,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** el `_physics_process` actual frena `velocity` siempre; en T09 convivirá con la persecución mediante el estado `HURT`. El flash es un tinte rojo; probar un color con valores mayores que 1 si se quiere un destello.
 - **Verificación o evidencia:** `enemy.gd` revisado; probado en el editor (empuje desde varios lados, paredes, golpes seguidos).
+
+### T09 — Persecución y máquina de estados
+- **Estado:** Completado (confirmado por mí el 2026-10-20)
+- **Fechas:** inicio / fin 2026-10-20
+- **Qué aprendí:** máquina de estados con `enum` y `match` (`IDLE`, `CHASE`, `HURT`) donde cada estado es dueño de `velocity`; grupos (`get_first_node_in_group`) para localizar al jugador sin rutas frágiles; `direction_to()` (dirección) frente a `distance_to()` (magnitud); por qué el knockback se pisaba en `CHASE` y cómo `HURT` lo resuelve; salida de `HURT` por velocidad (`is_zero_approx()`); `take_damage()` corre completa antes de que ocurra otra cosa, así que el orden interno no evita golpes dobles (sí importa poner primero los `return` que cortan el flujo).
+- **Qué implementé por mi cuenta:** nodo `Player` en el grupo `player`, rama `CHASE` con `direction_to()` por `chase_speed`, rama `HURT` con fricción y regreso a `CHASE` (o `IDLE` si no hay jugador), cambio a `HURT` en `take_damage()`, detección por `distance_to()` contra `detection_radius`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** usé `distance_to` donde hacía falta `direction_to`, y asigné solo `velocity.x`; el `if` de jugador inválido no cortaba el flujo y habría accedido a `null`.
+- **Dudas pendientes o conceptos por reforzar:** una vez en `CHASE` el enemigo no vuelve a `IDLE` al alejarse el jugador (decisión de diseño sin resolver; si se agrega salida, usar un radio de salida mayor que el de entrada para evitar oscilación). Hay una fricción redundante en `_process_chase` cuando no hay jugador. El archivo se reorganizó con funciones auxiliares (`_process_*`, `_apply_friction`); conviene poder explicar cada una con mis palabras.
+- **Verificación o evidencia:** `enemy.gd` revisado en disco; probado en el editor (quieto fuera del radio, persecución dentro, empuje sin persecución, regreso a persecución, golpes seguidos sin quedar en `HURT`).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
