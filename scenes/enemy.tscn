@@ -9,6 +9,9 @@ size = Vector2(16, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtglo"]
 size = Vector2(10, 13)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wt34f"]
+size = Vector2(12, 14)
+
 [node name="Enemy" type="CharacterBody2D" unique_id=99216161]
 collision_layer = 4
 script = ExtResource("1_md0e3")
@@ -26,3 +29,11 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=429999952]
 position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_dtglo")
+
+[node name="HitBox" type="Area2D" parent="." unique_id=800941973]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=632621257]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_wt34f")

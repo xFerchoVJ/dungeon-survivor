@@ -19,6 +19,7 @@ enum State {
 # ==================================================
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var hit_box: Area2D = $HitBox
 
 
 # ==================================================
@@ -36,6 +37,8 @@ enum State {
 @export_group("Detección")
 @export var detection_radius: float = 60.0
 
+@export_group("Daño")
+@export var damage: float = 25
 
 # ==================================================
 # VARIABLES INTERNAS
@@ -69,6 +72,11 @@ func _physics_process(delta: float) -> void:
 			_process_hurt(delta)
 
 	move_and_slide()
+	
+	var areas: Array[Area2D] = hit_box.get_overlapping_areas()
+	for area in areas:
+		_apply_damage_to_player(area)
+	
 
 
 # ==================================================
@@ -174,3 +182,10 @@ func _apply_damage_tween() -> void:
 		Color.WHITE,
 		0.1
 	)
+
+		
+func _apply_damage_to_player(area: Area2D) -> void:
+	var owner_node: Node = area.get_parent()
+	if owner_node is Player:
+		if current_state != State.HURT:
+			owner_node.take_damage(damage, global_position)

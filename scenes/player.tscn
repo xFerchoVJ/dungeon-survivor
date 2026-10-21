@@ -83,6 +83,9 @@ _data = {
 &"attack": SubResource("Animation_dqkch")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wt34f"]
+size = Vector2(10, 13)
+
 [node name="Player" type="CharacterBody2D" unique_id=311979828 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_g2els")
@@ -123,4 +126,16 @@ libraries/ = SubResource("AnimationLibrary_qlg0r")
 wait_time = 0.4
 one_shot = true
 
+[node name="HurtBox" type="Area2D" parent="." unique_id=386981757]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=1930797965]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_wt34f")
+
+[node name="HitCooldown" type="Timer" parent="." unique_id=12572304]
+one_shot = true
+
 [connection signal="area_entered" from="SwordPivot/Sword/Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="timeout" from="HitCooldown" to="." method="_on_hit_cooldown_timeout"]
