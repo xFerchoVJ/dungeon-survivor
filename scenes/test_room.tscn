@@ -25,4 +25,4 @@ damage = 10.0
 [node name="Enemy" parent="." unique_id=99216161 instance=ExtResource("3_h8avn")]
 position = Vector2(108, 84)
 
-[node name="hud" parent="." unique_id=2040187041 instance=ExtResource("5_mous7")]
+[node name="Hud" parent="." unique_id=2040187041 instance=ExtResource("5_mous7")]

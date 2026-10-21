@@ -1,7 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
-signal health_changed(actual: float, max: float)
+signal health_changed(actual_health: float, maximum_health: float)
+signal died
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var sword_pivot: Node2D = $SwordPivot
@@ -19,6 +20,7 @@ var bounce_frequency: float = 12.0
 var bounce_amplitude: float = 1.0
 var health: float = 100.0
 var damage_tween: Tween
+var is_dead: bool = false
 
 func _ready() -> void:
 	health = max_health
@@ -81,11 +83,15 @@ func take_damage(qty: float, position_hitter: Vector2) -> void:
 	if not hit_cooldown.is_stopped():
 		return
 		
+	if is_dead:
+		return
+		
 	health -= qty
 	health_changed.emit(health, max_health)
 	
 	if health <= 0.0:
-		print("Se murió el player")
+		is_dead = true
+		died.emit()
 		return
 	
 	hit_cooldown.start()
@@ -122,3 +128,7 @@ func reset_tween() -> void:
 		damage_tween.kill()
 		
 	sprite_2d.modulate = Color.WHITE
+	
+	
+func die() -> void:
+	set_physics_process(false)
