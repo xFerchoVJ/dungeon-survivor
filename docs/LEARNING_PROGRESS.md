@@ -21,7 +21,7 @@
 | T09 | Persecución y máquina de estados | M3 | Completado |
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | Completado |
 | T11 | HUD de vida | M3 | Completado |
-| T12 | Muerte y game over | M3 | No iniciado |
+| T12 | Muerte y game over | M3 | Completado |
 | D03 | Layout de los 3 cuartos (delegada) | M4 | No iniciado |
 | T13 | Aparición de enemigos | M4 | No iniciado |
 | T14 | Cuarto limpio y puerta | M4 | No iniciado |
@@ -183,5 +183,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** el callback no recibía los argumentos de la señal; el valor inicial se emitía antes de la conexión; la barra medía 4x27 px.
 - **Dudas pendientes o conceptos por reforzar:** el parámetro `max` de la señal oculta la función `max()` (renombrar). La instancia se llama `hud` en `test_room.tscn` y la raíz `Hud`. Queda un `theme_override_colors/font_color` sin efecto en la barra (el texto está oculto). Opcional: color según la vida restante.
 - **Verificación o evidencia:** `hud.gd`, `hud.tscn`, `test_room.gd`, `player.gd` revisados en disco; probado en el editor (barra llena al iniciar, baja con cada golpe, respeta los i-frames, queda fija).
+
+### T12 — Muerte y game over
+- **Estado:** Completado (confirmado por mí el 2026-10-21)
+- **Fechas:** inicio / fin 2026-10-21
+- **Qué aprendí:** la bandera `is_dead` corta `take_damage()` para que la muerte se procese una sola vez; señal `died` para que el jugador avise y el cuarto decida qué sigue; `await get_tree().create_timer(...).timeout` para una pausa sin detener el juego; `set_physics_process(false)` para congelar nodos; `get_nodes_in_group()` para actuar sobre todos los enemigos; `change_scene_to_file()` carga una escena nueva y deja el estado inicial sin resetear variables a mano; `CenterContainer` y `VBoxContainer` para centrar la UI.
+- **Qué implementé por mi cuenta:** `is_dead`, señal `died` y `die()` en `Player`; `_on_died()` en `test_room.gd` (congela jugador y enemigos, espera 1 s y cambia de escena); grupo `enemies` en `enemy.tscn`; `scenes/game_over.tscn` y `scripts/game_over.gd` con botón de reinicio.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** el guarda `is_dead` conviene que vaya antes que el de `hit_cooldown` en `take_damage()`. La ruta de `test_room.tscn` está fija en `game_over.gd`; en T15/T16 el reinicio pasará por `GameState`. Foco del botón con `grab_focus()` para usar teclado o control (opcional). Renombrar el parámetro `max` de `health_changed`.
+- **Verificación o evidencia:** `player.gd`, `test_room.gd`, `game_over.gd`, `game_over.tscn`, `enemy.tscn` revisados en disco; probado en el editor (muerte única sin errores, jugador y enemigos congelados, pantalla tras ~1 s, reinicio con vida completa, segunda muerte y reinicio).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
