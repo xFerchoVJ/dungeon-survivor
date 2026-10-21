@@ -83,7 +83,7 @@ _data = {
 &"attack": SubResource("Animation_dqkch")
 }
 
-[node name="Player" type="CharacterBody2D" unique_id=311979828]
+[node name="Player" type="CharacterBody2D" unique_id=311979828 groups=["player"]]
 collision_layer = 2
 script = ExtResource("1_g2els")
 
