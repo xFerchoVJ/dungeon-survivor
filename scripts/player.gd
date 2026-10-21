@@ -1,6 +1,8 @@
 class_name Player
 extends CharacterBody2D
 
+signal health_changed(actual: float, max: float)
+
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var sword_pivot: Node2D = $SwordPivot
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
@@ -20,6 +22,7 @@ var damage_tween: Tween
 
 func _ready() -> void:
 	health = max_health
+	health_changed.emit(health, max_health)
 
 func _physics_process(delta: float) -> void:
 	var direction: Vector2 = Input.get_vector(
@@ -79,6 +82,7 @@ func take_damage(qty: float, position_hitter: Vector2) -> void:
 		return
 		
 	health -= qty
+	health_changed.emit(health, max_health)
 	
 	if health <= 0.0:
 		print("Se murió el player")
