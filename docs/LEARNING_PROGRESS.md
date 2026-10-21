@@ -19,7 +19,7 @@
 | T07 | Escena `Enemy`, vida y muerte | M2 | Completado |
 | T08 | Flash y knockback | M2 | Completado |
 | T09 | Persecución y máquina de estados | M3 | Completado |
-| T10 | Daño al jugador, i-frames y parpadeo | M3 | No iniciado |
+| T10 | Daño al jugador, i-frames y parpadeo | M3 | Completado |
 | T11 | HUD de vida | M3 | No iniciado |
 | T12 | Muerte y game over | M3 | No iniciado |
 | D03 | Layout de los 3 cuartos (delegada) | M4 | No iniciado |
@@ -163,5 +163,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** usé `distance_to` donde hacía falta `direction_to`, y asigné solo `velocity.x`; el `if` de jugador inválido no cortaba el flujo y habría accedido a `null`.
 - **Dudas pendientes o conceptos por reforzar:** una vez en `CHASE` el enemigo no vuelve a `IDLE` al alejarse el jugador (decisión de diseño sin resolver; si se agrega salida, usar un radio de salida mayor que el de entrada para evitar oscilación). Hay una fricción redundante en `_process_chase` cuando no hay jugador. El archivo se reorganizó con funciones auxiliares (`_process_*`, `_apply_friction`); conviene poder explicar cada una con mis palabras.
 - **Verificación o evidencia:** `enemy.gd` revisado en disco; probado en el editor (quieto fuera del radio, persecución dentro, empuje sin persecución, regreso a persecución, golpes seguidos sin quedar en `HURT`).
+
+### T10 — Daño al jugador, i-frames y parpadeo
+- **Estado:** Completado (confirmado por mí el 2026-10-20)
+- **Fechas:** inicio / fin 2026-10-20
+- **Qué aprendí:** `Timer` `one_shot` como estado de invulnerabilidad: no corre hasta que se llama a `start()`, y `is_stopped()` sirve de guardia; `area_entered` solo se emite al empezar a solaparse, así que un jugador quieto no recibe daño repetido; `get_overlapping_areas()` consulta lo que está solapado ahora; comparar con `is` (tipo) y no con `==` (instancia contra clase); parpadeo con `Tween` en bucle que se corta con la señal `timeout` y restaura `modulate`.
+- **Qué implementé por mi cuenta:** `HurtBox` en `Player` (layer `player`, mask 0) y `HitBox` en `Enemy` (layer `enemy_hitbox`, mask `player`), `health`/`max_health` y `take_damage()` en el jugador con i-frames (`HitCooldown`), parpadeo con `Tween` y `reset_tween()` conectado a `timeout`, `damage` exportado en el enemigo, y daño por contacto con polling de `get_overlapping_areas()` (el enemigo no daña mientras está en `HURT`).
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** comparé instancia con clase (`== Player`), el `Timer` de i-frames no se arrancaba, y dejé una conexión de señal apuntando a un método borrado.
+- **Dudas pendientes o conceptos por reforzar:** al llegar a vida 0 `take_damage()` se sigue llamando cada frame y repite el `print` (se resuelve en T12). `position_hitter` del jugador aún no se usa. El polling revisa cada frame; aceptable con pocos enemigos.
+- **Verificación o evidencia:** `player.gd`, `enemy.gd`, `player.tscn` y `enemy.tscn` revisados en disco; probado en el editor (un golpe por contacto, sin daño durante i-frames, el parpadeo termina, un jugador quieto vuelve a recibir daño).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
