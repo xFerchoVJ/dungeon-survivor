@@ -20,7 +20,7 @@
 | T08 | Flash y knockback | M2 | Completado |
 | T09 | Persecución y máquina de estados | M3 | Completado |
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | Completado |
-| T11 | HUD de vida | M3 | No iniciado |
+| T11 | HUD de vida | M3 | Completado |
 | T12 | Muerte y game over | M3 | No iniciado |
 | D03 | Layout de los 3 cuartos (delegada) | M4 | No iniciado |
 | T13 | Aparición de enemigos | M4 | No iniciado |
@@ -173,5 +173,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** comparé instancia con clase (`== Player`), el `Timer` de i-frames no se arrancaba, y dejé una conexión de señal apuntando a un método borrado.
 - **Dudas pendientes o conceptos por reforzar:** al llegar a vida 0 `take_damage()` se sigue llamando cada frame y repite el `print` (se resuelve en T12). `position_hitter` del jugador aún no se usa. El polling revisa cada frame; aceptable con pocos enemigos.
 - **Verificación o evidencia:** `player.gd`, `enemy.gd`, `player.tscn` y `enemy.tscn` revisados en disco; probado en el editor (un golpe por contacto, sin daño durante i-frames, el parpadeo termina, un jugador quieto vuelve a recibir daño).
+
+### T11 — HUD de vida
+- **Estado:** Completado (confirmado por mí el 2026-10-21)
+- **Fechas:** inicio / fin 2026-10-21
+- **Qué aprendí:** señal tipada `health_changed(actual, max)` para que el jugador no conozca al HUD; el cuarto hace de intermediario y conecta ambos; el callback debe aceptar los argumentos que envía la señal; los hijos corren `_ready()` antes que el padre, así que la señal inicial del jugador se emite antes de conectar y hay que pintar el valor inicial una vez; `CanvasLayer` queda fijo respecto a la cámara; `ProgressBar` se estiliza con `StyleBoxFlat` en los theme overrides `background` y `fill`.
+- **Qué implementé por mi cuenta:** `scenes/hud.tscn` y `scripts/hud.gd` (`class_name Hud`, `update_bar()`), señal `health_changed` en `Player` emitida en `_ready()` y en `take_damage()`, `scripts/test_room.gd` que conecta la señal y pinta el valor inicial, barra verde con fondo oscuro y sin porcentaje.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** el callback no recibía los argumentos de la señal; el valor inicial se emitía antes de la conexión; la barra medía 4x27 px.
+- **Dudas pendientes o conceptos por reforzar:** el parámetro `max` de la señal oculta la función `max()` (renombrar). La instancia se llama `hud` en `test_room.tscn` y la raíz `Hud`. Queda un `theme_override_colors/font_color` sin efecto en la barra (el texto está oculto). Opcional: color según la vida restante.
+- **Verificación o evidencia:** `hud.gd`, `hud.tscn`, `test_room.gd`, `player.gd` revisados en disco; probado en el editor (barra llena al iniciar, baja con cada golpe, respeta los i-frames, queda fija).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
