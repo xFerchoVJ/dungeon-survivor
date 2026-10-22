@@ -23,7 +23,7 @@
 | T11 | HUD de vida | M3 | Completado |
 | T12 | Muerte y game over | M3 | Completado |
 | D03 | Layout de los 3 cuartos (delegada) | M4 | No iniciado |
-| T13 | Aparición de enemigos | M4 | No iniciado |
+| T13 | Aparición de enemigos | M4 | Completado |
 | T14 | Cuarto limpio y puerta | M4 | No iniciado |
 | T15 | Autoload `GameState` y siguiente cuarto | M4 | No iniciado |
 | T16 | Victoria y reinicio completo | M4 | No iniciado |
@@ -193,5 +193,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** el guarda `is_dead` conviene que vaya antes que el de `hit_cooldown` en `take_damage()`. La ruta de `test_room.tscn` está fija en `game_over.gd`; en T15/T16 el reinicio pasará por `GameState`. Foco del botón con `grab_focus()` para usar teclado o control (opcional). Renombrar el parámetro `max` de `health_changed`.
 - **Verificación o evidencia:** `player.gd`, `test_room.gd`, `game_over.gd`, `game_over.tscn`, `enemy.tscn` revisados en disco; probado en el editor (muerte única sin errores, jugador y enemigos congelados, pantalla tras ~1 s, reinicio con vida completa, segunda muerte y reinicio).
+
+### T13 — Aparición de enemigos
+- **Estado:** Completado (confirmado por mí el 2026-10-21)
+- **Fechas:** inicio / fin 2026-10-21
+- **Qué aprendí:** `preload` carga la `PackedScene` una vez; `instantiate()` crea el nodo pero no está en el juego hasta `add_child()`; los enemigos cuelgan del cuarto (`self`) y no de `current_scene`, para que se liberen con él y el script sirva cuando el cuarto se cargue dentro de otra escena (T15); `global_position` se asigna después de `add_child()`, con el nodo ya en el árbol, para que la posición sea correcta aunque el cuarto no esté en el origen; un solo script en la raíz sirve para los tres cuartos porque comparten la estructura `EnemySpawns/Spawn*`.
+- **Qué implementé por mi cuenta:** `scripts/room.gd` (`ENEMY_SCENE`, `@onready` de `EnemySpawns`, bucle sobre los `Marker2D` que instancia, agrega y posiciona cada `Enemy`), asignado a `Room1`, `Room2` y `Room3`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** primera versión con `add_child` en `current_scene` y `global_position` antes de agregar al árbol (funcionaba solo por coincidencia); `room_2` y `room_3` no tenían el script asignado.
+- **Dudas pendientes o conceptos por reforzar:** el bucle tipa los hijos como `Marker2D`; si alguien agrega otro tipo de nodo bajo `EnemySpawns`, falla. `room.gd` aún no conecta la señal `health_changed` ni maneja `died` (eso sigue en `test_room.gd`); en T14/T15 habrá que decidir dónde vive. Los enemigos nacen en `_ready()`, así que en T15 el jugador ya estará en el cuarto cuando aparezcan.
+- **Verificación o evidencia:** `room.gd` y los `.tscn` de los tres cuartos revisados en disco; probado en el editor (2, 3 y 4 enemigos en `room_1`, `room_2` y `room_3`, cada uno sobre su marcador).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
