@@ -2,6 +2,7 @@
 class_name Enemy
 extends CharacterBody2D
 
+signal died
 
 # ==================================================
 # ESTADOS
@@ -49,7 +50,7 @@ var current_state: State = State.IDLE
 
 var player: Player
 var damage_tween: Tween
-
+var is_dead: bool = false
 
 # ==================================================
 # CICLO DE VIDA
@@ -136,9 +137,14 @@ func _apply_friction(delta: float) -> void:
 # ==================================================
 
 func take_damage(qty_damage: float, position_hitter: Vector2) -> void:
+	if is_dead:
+		return
+
 	health -= qty_damage
 
 	if health <= 0.0:
+		died.emit()
+		is_dead = true
 		queue_free()
 		return
 

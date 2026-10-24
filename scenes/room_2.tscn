@@ -2,6 +2,8 @@
 
 [ext_resource type="TileSet" uid="uid://8bjnncahm384" path="res://scenes/tileset.tres" id="1_tileset"]
 [ext_resource type="Script" uid="uid://0881mhelpfda" path="res://scripts/room.gd" id="1_w0ydv"]
+[ext_resource type="PackedScene" uid="uid://bo5yt5uh4g5d7" path="res://scenes/door.tscn" id="3_4et86"]
+[ext_resource type="PackedScene" uid="uid://cdvf33jqtxs18" path="res://scenes/hud.tscn" id="4_ktm03"]
 
 [node name="Room2" type="Node2D" unique_id=1689884558]
 y_sort_enabled = true
@@ -28,3 +30,8 @@ position = Vector2(168, 88)
 
 [node name="Spawn3" type="Marker2D" parent="EnemySpawns" unique_id=1079411919]
 position = Vector2(264, 136)
+
+[node name="Door" parent="." unique_id=30072538 instance=ExtResource("3_4et86")]
+position = Vector2(160, 8)
+
+[node name="Hud" parent="." unique_id=2040187041 instance=ExtResource("4_ktm03")]
