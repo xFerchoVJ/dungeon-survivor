@@ -61,22 +61,22 @@
   Jugador ataca a un enemigo
   ────────────────────────────────────────────────────────
   Sword/Hitbox (Area2D)                Enemy/Hurtbox (Area2D)
-    layer: player_hitbox (4)             layer: enemy (3)
-    mask:  enemy (3)                     mask:  0 (pasiva)
-          │
-          │ area_entered(area)       ← detecta la hitbox
-          ▼
-    busca el cuerpo dueño de la hurtbox (su padre)
-    cuerpo.take_damage(daño_del_jugador, posición_del_atacante)
-          │
-          ▼
-    Enemy (CharacterBody2D)
-       • resta vida              ← decide el cuerpo
-       • flash + knockback       ← reacciona el cuerpo
-       • queue_free() si vida <= 0
+	layer: player_hitbox (4)             layer: enemy (3)
+	mask:  enemy (3)                     mask:  0 (pasiva)
+		  │
+		  │ area_entered(area)       ← detecta la hitbox
+		  ▼
+	busca el cuerpo dueño de la hurtbox (su padre)
+	cuerpo.take_damage(daño_del_jugador, posición_del_atacante)
+		  │
+		  ▼
+	Enemy (CharacterBody2D)
+	   • resta vida              ← decide el cuerpo
+	   • flash + knockback       ← reacciona el cuerpo
+	   • queue_free() si vida <= 0
 
   Enemigo toca al jugador: mismo flujo con
-    Enemy/Hitbox  (layer enemy_hitbox 5, mask player 2)  →  Player/Hurtbox (layer player 2, mask 0)
+	Enemy/Hitbox  (layer enemy_hitbox 5, mask player 2)  →  Player/Hurtbox (layer player 2, mask 0)
   ```
 
   | Nodo | Layer (soy) | Mask (veo) |

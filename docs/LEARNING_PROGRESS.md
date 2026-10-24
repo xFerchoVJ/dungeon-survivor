@@ -22,9 +22,9 @@
 | T10 | Daño al jugador, i-frames y parpadeo | M3 | Completado |
 | T11 | HUD de vida | M3 | Completado |
 | T12 | Muerte y game over | M3 | Completado |
-| D03 | Layout de los 3 cuartos (delegada) | M4 | No iniciado |
+| D03 | Layout de los 3 cuartos (delegada) | M4 | Completado |
 | T13 | Aparición de enemigos | M4 | Completado |
-| T14 | Cuarto limpio y puerta | M4 | No iniciado |
+| T14 | Cuarto limpio y puerta | M4 | Completado |
 | T15 | Autoload `GameState` y siguiente cuarto | M4 | No iniciado |
 | T16 | Victoria y reinicio completo | M4 | No iniciado |
 | T17 | `Resource` `Upgrade` | M5 | No iniciado |
@@ -203,5 +203,20 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** primera versión con `add_child` en `current_scene` y `global_position` antes de agregar al árbol (funcionaba solo por coincidencia); `room_2` y `room_3` no tenían el script asignado.
 - **Dudas pendientes o conceptos por reforzar:** el bucle tipa los hijos como `Marker2D`; si alguien agrega otro tipo de nodo bajo `EnemySpawns`, falla. `room.gd` aún no conecta la señal `health_changed` ni maneja `died` (eso sigue en `test_room.gd`); en T14/T15 habrá que decidir dónde vive. Los enemigos nacen en `_ready()`, así que en T15 el jugador ya estará en el cuarto cuando aparezcan.
 - **Verificación o evidencia:** `room.gd` y los `.tscn` de los tres cuartos revisados en disco; probado en el editor (2, 3 y 4 enemigos en `room_1`, `room_2` y `room_3`, cada uno sobre su marcador).
+
+### D03 — Layout de los 3 cuartos (delegada)
+- **Estado:** Completado (confirmado por mí el 2026-10-24)
+- **Trabajo delegado:** `scenes/room_1.tscn`, `room_2.tscn` y `room_3.tscn` con paredes, hueco de puerta y `Marker2D` de aparición bajo `EnemySpawns`.
+- **Verificación o evidencia:** usados y probados en el editor durante T13 y T14 (2, 3 y 4 enemigos por cuarto).
+
+### T14 — Cuarto limpio y puerta
+- **Estado:** Completado (confirmado por mí el 2026-10-24)
+- **Fechas:** inicio / fin 2026-10-24
+- **Qué aprendí:** contar enemigos vivos con la señal `died` de cada uno (`enemies_alive`) en lugar de `get_child_count`; el cuarto conecta la señal al instanciar; la puerta desactiva su colisión con `set_deferred` cuando termina la animación `open` (señal `animation_finished`).
+- **Qué implementé por mi cuenta:** `scenes/door.tscn` y `scripts/door.gd` (`class_name Door`, `open()`), `enemies_alive` y `_on_enemy_died()` en `room.gd`; además adelanté parte de T15: el cuarto instancia al `Player` en `PlayerSpawn`, y conecta `health_changed` y `died` con el `Hud`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** `return` sobrante al final de `_on_enemy_died()`. Si un cuarto no tiene marcadores, `enemies_alive` queda en 0 y la puerta nunca se abre. Tipar el parámetro de `_on_died(player)` y renombrar `max_health` en `_on_health_changed`. La ruta de `game_over.tscn` está fija en `room.gd`; en T15/T16 pasará por `GameState`.
+- **Verificación o evidencia:** `room.gd` y `door.gd` revisados en disco; probado en el editor (la puerta se abre al morir el último enemigo en los 3 cuartos).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*

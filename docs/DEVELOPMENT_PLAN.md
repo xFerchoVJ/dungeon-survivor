@@ -59,7 +59,7 @@ Pendientes de proyectos anteriores que se retoman aquí: autoload, `move_toward`
 ## Dependencias
 ```
 M0 → M1 → C01 → M2 → M3 → M4 → M5 → M6
-                      D03 se puede hacer en paralelo desde M1
+					  D03 se puede hacer en paralelo desde M1
 ```
 - Casi todo depende del jugador (M1).
 - El combate (M2) necesita el jugador y un enemigo estático para probar la espada.
