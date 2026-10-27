@@ -14,6 +14,10 @@ config/name="dungeon-survivor"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameState="*uid://w6jxp6r0867m"
+
 [display]
 
 window/size/viewport_width=320

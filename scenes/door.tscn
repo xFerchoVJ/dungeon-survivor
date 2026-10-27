@@ -42,6 +42,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u0ya7"]
 size = Vector2(32, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtglo"]
+size = Vector2(26, 13)
+
 [node name="Door" type="StaticBody2D" unique_id=30072538]
 collision_mask = 0
 script = ExtResource("1_uvdjg")
@@ -53,4 +56,13 @@ animation = &"open"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=703419089]
 shape = SubResource("RectangleShape2D_u0ya7")
 
+[node name="ExitArea" type="Area2D" parent="." unique_id=190421393]
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitArea" unique_id=1854569300]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_dtglo")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="ExitArea" to="." method="_on_exit_area_body_entered"]
