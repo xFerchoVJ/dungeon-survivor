@@ -25,7 +25,7 @@
 | D03 | Layout de los 3 cuartos (delegada) | M4 | Completado |
 | T13 | Aparición de enemigos | M4 | Completado |
 | T14 | Cuarto limpio y puerta | M4 | Completado |
-| T15 | Autoload `GameState` y siguiente cuarto | M4 | No iniciado |
+| T15 | Autoload `GameState` y siguiente cuarto | M4 | Completado |
 | T16 | Victoria y reinicio completo | M4 | No iniciado |
 | T17 | `Resource` `Upgrade` | M5 | No iniciado |
 | D04 | Archivos de mejoras (delegada) | M5 | No iniciado |
@@ -218,5 +218,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** `return` sobrante al final de `_on_enemy_died()`. Si un cuarto no tiene marcadores, `enemies_alive` queda en 0 y la puerta nunca se abre. Tipar el parámetro de `_on_died(player)` y renombrar `max_health` en `_on_health_changed`. La ruta de `game_over.tscn` está fija en `room.gd`; en T15/T16 pasará por `GameState`.
 - **Verificación o evidencia:** `room.gd` y `door.gd` revisados en disco; probado en el editor (la puerta se abre al morir el último enemigo en los 3 cuartos).
+
+### T15 — Autoload `GameState` y siguiente cuarto
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Fechas:** inicio / fin 2026-10-27
+- **Qué aprendí:** `change_scene_to_file()` destruye la escena actual con el `Player`, así que el estado que debe sobrevivir vive en un autoload; un autoload puede ser un script suelto (Godot crea un `Node`, le pone el script y lo cuelga de `root`) y el `*` en `project.godot` lo expone como variable global; diferencia entre autoload (instancia única ya creada) y `class_name` (un tipo para declarar variables); `_ready()` corre solo una vez, por eso el reinicio es una función propia (`reset()`); los valores iniciales de las variables del autoload deben coincidir con lo que deja `reset()`; `add_child(player)` ejecuta el `_ready()` del jugador, que pone `health = max_health`, así que la vida guardada se asigna después; asignar `health` directo no emite `health_changed`, por eso el HUD se actualiza a mano.
+- **Qué implementé por mi cuenta:** `scripts/game_state.gd` registrado como autoload `GameState` (`LEVEL_PATHS`, `actual_room`, `actual_health_player`, `is_new_match`, `reset()`); señal `player_outside` en `Door` emitida desde `ExitArea`; en `room.gd`, `_on_player_outside()` (guarda la vida, marca `is_new_match = false`, avanza `actual_room` y cambia de escena) y `update_health_player_game_state()` (aplica la vida guardada y actualiza el HUD); `GameState.reset()` en `game_over.gd` antes de volver a `room_1`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** escribí `ready()` en vez de `_ready()` (nadie la llamaba); `is_new_match` empezaba en `false`, así que el primer arranque habría leído vida 0; puse `is_new_match = false` al entrar al cuarto en vez de al guardar la vida; el orden entre `add_child` y la asignación de la vida.
+- **Dudas pendientes o conceptos por reforzar:** en el cuarto 3, `_on_player_outside()` hace `return` y la puerta no hace nada (se resuelve en T16, victoria). `LEVEL_PATHS` podría llamarse `ROOM_PATHS` por consistencia. `update_health_player_game_state()` también modifica la vida del jugador; un nombre como `apply_saved_health` sería más claro, y `hud.update_bar` se repite en ambas ramas. Tipar `get_first_node_in_group` con `as Player` es opcional.
+- **Verificación o evidencia:** `game_state.gd`, `door.gd`, `room.gd`, `game_over.gd` y `project.godot` revisados en disco; probado en el editor (cuarto 1 con barra llena; vida conservada y jugador en `PlayerSpawn` en los cuartos 2 y 3; tras game over, cuarto 1 con barra llena y vida conservada correctamente al avanzar de nuevo; consola sin errores).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
