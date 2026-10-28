@@ -27,10 +27,10 @@
 | T14 | Cuarto limpio y puerta | M4 | Completado |
 | T15 | Autoload `GameState` y siguiente cuarto | M4 | Completado |
 | T16 | Victoria y reinicio completo | M4 | Completado |
-| T17 | `Resource` `Upgrade` | M5 | No iniciado |
-| D04 | Archivos de mejoras (delegada) | M5 | No iniciado |
-| T18 | Pantalla "elige 1 de 3" con pausa | M5 | No iniciado |
-| T19 | Aplicar mejoras | M5 | No iniciado |
+| T17 | `Resource` `Upgrade` | M5 | Completado |
+| D04 | Archivos de mejoras (delegada) | M5 | Completado |
+| T18 | Pantalla "elige 1 de 3" con pausa | M5 | Completado |
+| T19 | Aplicar mejoras | M5 | Completado |
 | T20 | Segundo enemigo con embestida (recortable) | M6 | No iniciado |
 | T21 | Menú principal y sonido | M6 | No iniciado |
 | C02 | Balance | M6 | No iniciado |
@@ -238,5 +238,41 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:**
 - **Dudas pendientes o conceptos por reforzar:** en `_on_player_outside()` se guarda la vida y `is_new_match = false` antes de comprobar si es el último cuarto; es inofensivo porque `reset()` lo borra, pero podría guardarse solo cuando hay siguiente cuarto. `victory.gd` y `game_over.gd` son idénticos; revisar si conviene unificar cuando T21 agregue el menú. Cuando T19 guarde mejoras en `GameState`, `reset()` tendrá que limpiarlas también.
 - **Verificación o evidencia:** `room.gd`, `victory.gd` y `victory.tscn` revisados en disco; probado en el editor (victoria al salir del cuarto 3, "Volver al inicio" lleva al cuarto 1 con vida completa, reinicio tras perder correcto, consola sin errores).
+
+### T17 — `Resource` `Upgrade`
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Fechas:** inicio / fin 2026-10-27
+- **Qué aprendí:** un `Resource` es un objeto de datos que se guarda en disco (`.tres`) y no es un nodo; `class_name` hace que el tipo aparezca en *New Resource…*; `@export` sobre un `enum` muestra un menú desplegable en el Inspector; `@export_multiline` convierte un `String` en un cuadro de varias líneas; `name` (de `Node`) no es lo mismo que `resource_name` (de `Resource`); `value` debe ser `float` para poder expresar porcentajes como `0.15`.
+- **Qué implementé por mi cuenta:** `scripts/upgrade.gd` (`class_name Upgrade extends Resource`, enum `UpgradeType` con `DAMAGE`, `MAX_HEALTH`, `SPEED` y `ATTACK_SPEED`, y los campos `name`, `description`, `upgrade_type` y `value`).
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** `value` empezó como `int` y no podía expresar porcentajes; la descripción empezó como texto de una sola línea.
+- **Dudas pendientes o conceptos por reforzar:** definir qué significa `value` para cada tipo (suma fija o porcentaje en `SPEED` y `ATTACK_SPEED`) antes de D04 y T19; anotarlo como comentario en `upgrade.gd` o decidirlo al empezar D04.
+- **Verificación o evidencia:** `upgrade.gd` revisado en disco; probado en el editor (`Upgrade` aparece en *New Resource…*, el Inspector muestra los cuatro campos con menú y cuadro multilínea, `.tres` temporal con `script_class="Upgrade"` y borrado después).
+
+### D04 — Archivos de mejoras (delegada)
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Trabajo delegado:** cinco `.tres` en `resources/upgrades/` usando `scripts/upgrade.gd`: `damage_up` (`DAMAGE`, 10), `heavy_blade` (`DAMAGE`, 25), `max_health_up` (`MAX_HEALTH`, 20), `speed_up` (`SPEED`, 0.1, multiplicador) y `attack_speed_up` (`ATTACK_SPEED`, 0.15, reducción del cooldown). `upgrade.gd` no se modificó.
+- **Dudas pendientes o conceptos por reforzar:** anotar en un comentario de `upgrade.gd` qué significa `value` para cada tipo.
+- **Verificación o evidencia:** UID del script y valores del enum revisados en disco; abiertos en el Inspector y se ven bien.
+
+### T18 — Pantalla "elige 1 de 3" con pausa
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Fechas:** inicio / fin 2026-10-27
+- **Qué aprendí:** `get_tree().paused` congela el árbol, pero cada nodo decide con `process_mode`; la pantalla usa `Always` (valor 3) para que sus botones sigan respondiendo; `Button.pressed` no trae argumentos, así que se usa `Callable.bind()` para pasar el `Upgrade` a cada botón; `duplicate()` antes de `shuffle()` para no mutar la constante y `slice(0, 3)` para tomar 3 distintas; un `Button` calcula su ancho a partir del texto, por lo que en 320x180 hay que fijar `Custom Minimum Size`, `Autowrap Mode` y un tamaño de fuente menor; la pantalla emite una señal y quien la instanció decide qué hacer (reanudar, quitarla); `queue_free()` destruye al final del frame.
+- **Qué implementé por mi cuenta:** `scenes/upgrade_screen.tscn` y `scripts/upgrade_screen.gd` (`class_name UpgradeScreen`, `UPGRADES_LIST`, `show_random_upgrades()`, señal `upgrade_selected(upgrade: Upgrade)`); en `room.gd`, `UPGRADE_SCENE`, `show_upgrade_screen()`, `_on_upgrade_selected()` e `is_last_room()`; la pantalla se salta en el último cuarto.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** los botones se salían del viewport de 320x180; había que quitar el `_ready()` temporal de la pantalla.
+- **Dudas pendientes o conceptos por reforzar:** si dos botones se presionan en el mismo frame, `upgrade_selected` se emite dos veces; en T19 podría aplicar la mejora doble. `_on_upgrade_selected` aún no usa su parámetro.
+- **Verificación o evidencia:** `room.gd` y `upgrade_screen.gd` revisados en disco; probado en el editor (pausa y reanudación, pantalla en los cuartos 1 y 2, sin pantalla en el 3, sin repetidas, sin pausa tras reiniciar, consola sin errores).
+
+### T19 — Aplicar mejoras
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Fechas:** inicio / fin 2026-10-27
+- **Qué aprendí:** el `Player` se destruye en cada cambio de cuarto, así que las mejoras elegidas viven en el autoload y el cuarto las aplica al jugador nuevo, partiendo siempre del valor base de la escena (así no se acumulan de más); cada tipo de mejora necesita su propia fórmula (suma fija en daño y vida máxima, multiplicador `speed * (1 + valor)` en velocidad, `wait_time / (1 + valor)` en el ataque); sumar un multiplicador como si fuera suma fija casi no tiene efecto; `connect(..., CONNECT_ONE_SHOT)` borra la conexión tras la primera emisión y evita aplicar la mejora dos veces si dos botones se presionan en el mismo frame; aplicar las estadísticas después de `add_child` (para que existan los `@onready`) y antes de `apply_saved_health`.
+- **Qué implementé por mi cuenta:** en `game_state.gd`, `upgrades_applied` (`Dictionary[String, float]`), `apply_upgrade()` con `match` y `reset_upgrades()` llamado desde `reset()`; en `room.gd`, `instanciate_player()` y `apply_player_bonus_stadistics()`, y la llamada a `GameState.apply_upgrade()` en `_on_upgrade_selected()`.
+- **Trabajo delegado:** correcciones a mi código, que yo autoricé: `speed *= 1.0 + bonus` en lugar de `+=`, `CONNECT_ONE_SHOT` en la conexión de `upgrade_selected`, y descripción de `attack_speed_up.tres` ("Ataca 15% más rápido.").
+- **Dificultades:** la velocidad sumaba `0.1` en vez de multiplicar; la doble emisión de `upgrade_selected` quedó sin resolver hasta la revisión.
+- **Dudas pendientes o conceptos por reforzar:** las llaves `String` del diccionario se repiten en varios lugares; usar `Upgrade.UpgradeType` como llave simplificaría `match` y `reset_upgrades()`. Hoy `room.gd` empuja las estadísticas al jugador; el backlog proponía que el jugador las lea de `GameState` (en `test_room` no se aplicarían). Renombrar `instanciate_player` y `stadistics`, y tipar `player` en `apply_player_bonus_stadistics`. Falta el comentario sobre `value` en `upgrade.gd`.
+- **Verificación o evidencia:** `game_state.gd` y `room.gd` revisados en disco; probado en el editor (cada mejora hace efecto, persiste del cuarto 1 al 3, se pierde tras game over y victoria, consola sin errores).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
