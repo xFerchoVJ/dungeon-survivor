@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://coahnaoh4s864"]
+
+[ext_resource type="Script" uid="uid://rrc62fc4wc6w" path="res://scripts/victory.gd" id="1_le47n"]
+
+[node name="Victory" type="CanvasLayer" unique_id=1210478396]
+script = ExtResource("1_le47n")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=787983106]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=2081856208]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1598145064]
+layout_mode = 2
+text = "¡Felicidades Ganaste!"
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1450683742]
+layout_mode = 2
+text = "Volver al inicio"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

@@ -27,16 +27,7 @@ func _ready() -> void:
 	
 	# Recorrer todos los enemigos del spawn
 	for spawn: Marker2D in enemy_spawns.get_children():
-		# Instanciar al enemigo
-		var enemy: Enemy = ENEMY_SCENE.instantiate()
-		# Sumar los enemigos vivo
-		enemies_alive += 1
-		# Conectar señales
-		enemy.died.connect(_on_enemy_died)
-		# Añadir primero al árbol como hijo de este cuarto (self)
-		add_child(enemy)
-		# Asignar la posición global DESPUÉS de estar en el árbol
-		enemy.global_position = spawn.global_position
+		add_enemy_to_scene(spawn)
 		
 	# Escuchar la señal de door
 	door.player_outside.connect(_on_player_outside)
@@ -65,10 +56,15 @@ func _on_died() -> void:
 func _on_player_outside() -> void:
 	# Get player
 	var player: Player = get_tree().get_first_node_in_group("player")
+	
+	# Ultimo cuarto?
+	if GameState.actual_room == GameState.LEVEL_PATHS.size() - 1:
+		get_tree().change_scene_to_file("res://scenes/victory.tscn")
+		return
+	
+	# Continuan los cuartos
 	GameState.is_new_match = false
 	GameState.actual_health_player = player.health
-	if GameState.actual_room == 2:
-		return
 	GameState.actual_room += 1
 	get_tree().change_scene_to_file(GameState.LEVEL_PATHS[GameState.actual_room])
 	
@@ -78,3 +74,15 @@ func apply_saved_health(player: Player) -> void:
 	else:
 		hud.update_bar(GameState.actual_health_player, player.max_health)
 		player.health = GameState.actual_health_player
+		
+func add_enemy_to_scene(spawn) -> void:
+	# Instanciar al enemigo
+	var enemy: Enemy = ENEMY_SCENE.instantiate()
+	# Sumar los enemigos vivo
+	enemies_alive += 1
+	# Conectar señales
+	enemy.died.connect(_on_enemy_died)
+	# Añadir primero al árbol como hijo de este cuarto (self)
+	add_child(enemy)
+	# Asignar la posición global DESPUÉS de estar en el árbol
+	enemy.global_position = spawn.global_position
