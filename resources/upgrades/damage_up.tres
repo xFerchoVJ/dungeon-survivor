@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Script" uid="uid://dbcwpskbrejkx" path="res://scripts/upgrade.gd" id="1_upgrade"]
+
+[resource]
+script = ExtResource("1_upgrade")
+name = "Filo afilado"
+description = "+10 de daño con la espada."
+upgrade_type = 0
+value = 10.0
