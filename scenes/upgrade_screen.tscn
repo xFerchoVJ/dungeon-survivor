@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://cka1l2dmdqkti"]
+
+[ext_resource type="Script" uid="uid://dit5bnurw3oir" path="res://scripts/upgrade_screen.gd" id="1_mh8j6"]
+
+[node name="UpgradeScreen" type="CanvasLayer" unique_id=1762526485 node_paths=PackedStringArray("button", "button_2", "button_3")]
+process_mode = 3
+script = ExtResource("1_mh8j6")
+button = NodePath("CenterContainer/HBoxContainer/Button")
+button_2 = NodePath("CenterContainer/HBoxContainer/Button2")
+button_3 = NodePath("CenterContainer/HBoxContainer/Button3")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=820716513]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer" unique_id=1669372758]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CenterContainer/HBoxContainer" unique_id=718862133]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 3
+
+[node name="Button2" type="Button" parent="CenterContainer/HBoxContainer" unique_id=621972190]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 3
+
+[node name="Button3" type="Button" parent="CenterContainer/HBoxContainer" unique_id=1723587032]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 3
