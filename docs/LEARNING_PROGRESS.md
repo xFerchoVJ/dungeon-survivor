@@ -26,7 +26,7 @@
 | T13 | Aparición de enemigos | M4 | Completado |
 | T14 | Cuarto limpio y puerta | M4 | Completado |
 | T15 | Autoload `GameState` y siguiente cuarto | M4 | Completado |
-| T16 | Victoria y reinicio completo | M4 | No iniciado |
+| T16 | Victoria y reinicio completo | M4 | Completado |
 | T17 | `Resource` `Upgrade` | M5 | No iniciado |
 | D04 | Archivos de mejoras (delegada) | M5 | No iniciado |
 | T18 | Pantalla "elige 1 de 3" con pausa | M5 | No iniciado |
@@ -228,5 +228,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** escribí `ready()` en vez de `_ready()` (nadie la llamaba); `is_new_match` empezaba en `false`, así que el primer arranque habría leído vida 0; puse `is_new_match = false` al entrar al cuarto en vez de al guardar la vida; el orden entre `add_child` y la asignación de la vida.
 - **Dudas pendientes o conceptos por reforzar:** en el cuarto 3, `_on_player_outside()` hace `return` y la puerta no hace nada (se resuelve en T16, victoria). `LEVEL_PATHS` podría llamarse `ROOM_PATHS` por consistencia. `update_health_player_game_state()` también modifica la vida del jugador; un nombre como `apply_saved_health` sería más claro, y `hud.update_bar` se repite en ambas ramas. Tipar `get_first_node_in_group` con `as Player` es opcional.
 - **Verificación o evidencia:** `game_state.gd`, `door.gd`, `room.gd`, `game_over.gd` y `project.godot` revisados en disco; probado en el editor (cuarto 1 con barra llena; vida conservada y jugador en `PlayerSpawn` en los cuartos 2 y 3; tras game over, cuarto 1 con barra llena y vida conservada correctamente al avanzar de nuevo; consola sin errores).
+
+### T16 — Victoria y reinicio completo
+- **Estado:** Completado (confirmado por mí el 2026-10-27)
+- **Fechas:** inicio / fin 2026-10-27
+- **Qué aprendí:** una pantalla de fin es otra escena más, con el mismo patrón que `game_over.tscn`; el autoload sobrevive a los cambios de escena, así que el reinicio se hace de forma explícita con `GameState.reset()` antes de volver a `room_1`; con `is_new_match = true` el cuarto nuevo usa la vida completa del jugador y no la guardada; usar `LEVEL_PATHS.size() - 1` en lugar de un número fijo para detectar el último cuarto.
+- **Qué implementé por mi cuenta:** `scenes/victory.tscn` (`CanvasLayer` > `CenterContainer` > `VBoxContainer` con `Label` y `Button`) y `scripts/victory.gd` (`reset()` y cambio a `room_1`); en `room.gd`, la rama de `_on_player_outside()` que cambia a `victory.tscn` cuando se sale del último cuarto.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:**
+- **Dudas pendientes o conceptos por reforzar:** en `_on_player_outside()` se guarda la vida y `is_new_match = false` antes de comprobar si es el último cuarto; es inofensivo porque `reset()` lo borra, pero podría guardarse solo cuando hay siguiente cuarto. `victory.gd` y `game_over.gd` son idénticos; revisar si conviene unificar cuando T21 agregue el menú. Cuando T19 guarde mejoras en `GameState`, `reset()` tendrá que limpiarlas también.
+- **Verificación o evidencia:** `room.gd`, `victory.gd` y `victory.tscn` revisados en disco; probado en el editor (victoria al salir del cuarto 3, "Volver al inicio" lleva al cuarto 1 con vida completa, reinicio tras perder correcto, consola sin errores).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
