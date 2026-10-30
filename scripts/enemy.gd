@@ -11,7 +11,10 @@ signal died
 enum State {
 	IDLE,
 	CHASE,
-	HURT
+	HURT,
+	WINDUP,
+	CHARGE,
+	RECOVER
 }
 
 
@@ -62,18 +65,13 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	match current_state:
-		State.IDLE:
-			_process_idle(delta)
+	# Actualizar el estado actual
+	_update_state(delta)
 
-		State.CHASE:
-			_process_chase(delta)
-
-		State.HURT:
-			_process_hurt(delta)
-
+	# Aplicar posicion y movimiento
 	move_and_slide()
-	
+
+	# Aplicar el daño
 	var areas: Array[Area2D] = hit_box.get_overlapping_areas()
 	for area in areas:
 		_apply_damage_to_player(area)
@@ -83,6 +81,17 @@ func _physics_process(delta: float) -> void:
 # ==================================================
 # COMPORTAMIENTO DE LOS ESTADOS
 # ==================================================
+
+func _update_state(delta: float) -> void:
+	match current_state:
+		State.IDLE:
+			_process_idle(delta)
+
+		State.CHASE:
+			_process_chase(delta)
+
+		State.HURT:
+			_process_hurt(delta)
 
 func _process_idle(delta: float) -> void:
 	_apply_friction(delta)

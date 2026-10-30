@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c6xfvuy3n28a7" path="res://scenes/player.tscn" id="2_4adyp"]
 [ext_resource type="PackedScene" uid="uid://3d0vqewg5uyt" path="res://scenes/enemy.tscn" id="3_h8avn"]
 [ext_resource type="PackedScene" uid="uid://cdvf33jqtxs18" path="res://scenes/hud.tscn" id="5_mous7"]
+[ext_resource type="PackedScene" uid="uid://b8g805wdedjww" path="res://scenes/charger_enemy.tscn" id="6_mous7"]
 
 [node name="TestRoom" type="Node2D" unique_id=1686601554]
 y_sort_enabled = true
@@ -26,3 +27,6 @@ damage = 10.0
 position = Vector2(108, 84)
 
 [node name="Hud" parent="." unique_id=2040187041 instance=ExtResource("5_mous7")]
+
+[node name="ChargerEnemy" parent="." unique_id=696771878 instance=ExtResource("6_mous7")]
+position = Vector2(194, 69)

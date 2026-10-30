@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b8g805wdedjww"]
+
+[ext_resource type="PackedScene" uid="uid://3d0vqewg5uyt" path="res://scenes/enemy.tscn" id="1_efnuu"]
+[ext_resource type="Script" uid="uid://c3v7ac0gceme0" path="res://scripts/charger_enemy.gd" id="2_6nxsf"]
+[ext_resource type="Texture2D" uid="uid://cq1dkekndtcod" path="res://assets/Tiles/tile_0110.png" id="2_rvwg5"]
+
+[node name="ChargerEnemy" unique_id=99216161 instance=ExtResource("1_efnuu")]
+script = ExtResource("2_6nxsf")
+notice_distance = 40.0
+notice_duration = 0.6
+
+[node name="Sprite2D" parent="." index="0" unique_id=624853170]
+texture = ExtResource("2_rvwg5")
