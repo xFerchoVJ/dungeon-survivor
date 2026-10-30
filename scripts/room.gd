@@ -2,7 +2,7 @@ extends Node2D
 
 # Constantes
 const ENEMY_SCENE: PackedScene = preload("res://scenes/enemy.tscn")
-const ENEMY_CHARGER_SCENBE: PackedScene = preload("res://scenes/charger_enemy.tscn")
+const ENEMY_CHARGER_SCENE: PackedScene = preload("res://scenes/charger_enemy.tscn")
 const PLAYER_SCENE: PackedScene = preload("res://scenes/player.tscn")
 const UPGRADE_SCENE: PackedScene = preload("res://scenes/upgrade_screen.tscn")
 
@@ -20,10 +20,10 @@ func _ready() -> void:
 	# Instanciar jugador
 	instanciate_player()
 	
-	# Recorrer todos los enemigos del spawn y obtener indíce para usar % y poner charger enemy si  el indice es par
-	for i in range(enemy_spawns.get_children()):
-		var spawn: Marker2D = enemy_spawns.get_child(i)
-		add_enemy_to_scene(spawn, i)
+	# Spawnear enemigos
+	for index: int in range(enemy_spawns.get_children().size()):
+		var spawn: Marker2D = enemy_spawns.get_child(index)
+		add_enemy_to_scene(spawn, index)
 
 	# Escuchar la señal de door
 	door.player_outside.connect(_on_player_outside)
@@ -73,24 +73,22 @@ func apply_saved_health(player: Player) -> void:
 		player.health = GameState.actual_health_player
 		
 func add_enemy_to_scene(spawn: Marker2D, index: int) -> void:
-	if GameState.actual_room > 0 and index % 2 == 0:
-		var charger_enemy: ChargerEnemy = ENEMY_CHARGER_SCENBE.instantiate()
-		enemies_alive += 1
-		charger_enemy.died.connect(_on_enemy_died)
-		add_child(charger_enemy)
-		charger_enemy.global_position = spawn.global_position
-	else:
-		# Instanciar al enemigo
-		var enemy: Enemy = ENEMY_SCENE.instantiate()
-		# Sumar los enemigos vivo
-		enemies_alive += 1
-		# Conectar señales
-		enemy.died.connect(_on_enemy_died)
-		# Añadir primero al árbol como hijo de este cuarto (self)
-		add_child(enemy)
-		# Asignar la posición global DESPUÉS de estar en el árbol
-		enemy.global_position = spawn.global_position
+	var enemy_instance: Enemy = decide_enemy_type(index).instantiate()
+	# Sumar los enemigos vivo
+	enemies_alive += 1
+	# Conectar señales
+	enemy_instance.died.connect(_on_enemy_died)
+	# Añadir primero al árbol como hijo de este cuarto (self)
+	add_child(enemy_instance)
+	# Asignar la posición global DESPUÉS de estar en el árbol
+	enemy_instance.global_position = spawn.global_position
 
+
+func decide_enemy_type(index: int) -> PackedScene:
+	if GameState.actual_room > 0 and index % 2 == 0:
+		return ENEMY_CHARGER_SCENE
+	else:
+		return ENEMY_SCENE
 	
 func show_upgrade_screen() -> void:
 	if is_last_room():
