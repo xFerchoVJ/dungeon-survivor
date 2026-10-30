@@ -31,7 +31,7 @@
 | D04 | Archivos de mejoras (delegada) | M5 | Completado |
 | T18 | Pantalla "elige 1 de 3" con pausa | M5 | Completado |
 | T19 | Aplicar mejoras | M5 | Completado |
-| T20 | Segundo enemigo con embestida (recortable) | M6 | No iniciado |
+| T20 | Segundo enemigo con embestida (recortable) | M6 | Completado |
 | T21 | Menú principal y sonido | M6 | No iniciado |
 | C02 | Balance | M6 | No iniciado |
 | C03 | Revisión final | M6 | No iniciado |
@@ -274,5 +274,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** la velocidad sumaba `0.1` en vez de multiplicar; la doble emisión de `upgrade_selected` quedó sin resolver hasta la revisión.
 - **Dudas pendientes o conceptos por reforzar:** las llaves `String` del diccionario se repiten en varios lugares; usar `Upgrade.UpgradeType` como llave simplificaría `match` y `reset_upgrades()`. Hoy `room.gd` empuja las estadísticas al jugador; el backlog proponía que el jugador las lea de `GameState` (en `test_room` no se aplicarían). Renombrar `instanciate_player` y `stadistics`, y tipar `player` en `apply_player_bonus_stadistics`. Falta el comentario sobre `value` en `upgrade.gd`.
 - **Verificación o evidencia:** `game_state.gd` y `room.gd` revisados en disco; probado en el editor (cada mejora hace efecto, persiste del cuarto 1 al 3, se pierde tras game over y victoria, consola sin errores).
+
+### T20 — Segundo enemigo con embestida
+- **Estado:** Completado (confirmado por mí el 2026-10-29)
+- **Fechas:** inicio / fin 2026-10-29
+- **Qué aprendí:** herencia de escenas y scripts (`ChargerEnemy extends Enemy`) para reutilizar la máquina de estados de T09, sobreescribiendo `_update_state` y `_process_chase` y llamando `super()` para los demás estados; el aviso (WINDUP) con un `Tween` en bucle que parpadea el `modulate`, y matarlo con `reset_tween()` al salir del estado o al recibir daño; fijar la dirección de la embestida al terminar el aviso para que se pueda esquivar; cortar la embestida con `is_on_wall()`; elegir qué escena instanciar con `index % 2` y `GameState.actual_room`; `range()` recibe un entero, no un `Array` (`get_children().size()`).
+- **Qué implementé por mi cuenta:** `scripts/charger_enemy.gd`, `scenes/charger_enemy.tscn` (escena heredada de `enemy.tscn` con el sprite `tile_0110`); en `room.gd`, el spawn de chargers en los cuartos 2 y 3 y el refactor de `add_enemy_to_scene()` con `decide_enemy_type()`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** el `for` del spawn pasaba un `Array` a `range()`; el nombre de la constante tenía un typo (`SCENBE`).
+- **Dudas pendientes o conceptos por reforzar:** `var enemy_instance: Enemy;` se puede declarar y asignar en una línea, sin `;`. Ajustar los exports del charger (`charge_speed`, `recovery_duration`) en C02.
+- **Verificación o evidencia:** `room.gd` y `charger_enemy.gd` revisados en disco; probado en el editor (el aviso da tiempo de reaccionar, se frena contra paredes sin atravesarlas, matarlo durante el aviso deja la puerta y la pantalla de mejoras funcionando).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
