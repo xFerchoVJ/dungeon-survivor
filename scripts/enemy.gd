@@ -24,6 +24,9 @@ enum State {
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var hit_box: Area2D = $HitBox
+@onready var enemy_hit: AudioStreamPlayer2D = $EnemyHit
+@onready var enemy_death: AudioStreamPlayer2D = $EnemyDeath
+@onready var hurt_box: Area2D = $HurtBox
 
 
 # ==================================================
@@ -154,13 +157,22 @@ func take_damage(qty_damage: float, position_hitter: Vector2) -> void:
 	if health <= 0.0:
 		died.emit()
 		is_dead = true
-		queue_free()
+		enemy_death.play()
+		_desactivate()
 		return
 
 	current_state = State.HURT
 	_apply_knockback(position_hitter)
 	_apply_damage_tween()
+	enemy_hit.play()
 
+
+func _desactivate() -> void:
+	visible = false
+	set_physics_process(false)
+	for item in [hurt_box, hit_box]:
+		item.set_deferred("monitorable", false)
+		item.set_deferred("monitoring", false)
 
 func _apply_knockback(position_hitter: Vector2) -> void:
 	var direction: Vector2 = (
@@ -204,3 +216,7 @@ func _apply_damage_to_player(area: Area2D) -> void:
 	if owner_node is Player:
 		if current_state != State.HURT:
 			owner_node.take_damage(damage, global_position)
+
+
+func _on_enemy_death_finished() -> void:
+	queue_free()

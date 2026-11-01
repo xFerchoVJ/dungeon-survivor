@@ -46,6 +46,7 @@ func _on_died() -> void:
 	var enemies: Array[Node] = get_tree().get_nodes_in_group("enemies")
 	for enemy in enemies:
 		enemy.set_physics_process(false)
+	player.player_death.play()
 	await get_tree().create_timer(1.0).timeout
 	get_tree().change_scene_to_file("res://scenes/game_over.tscn")
 	

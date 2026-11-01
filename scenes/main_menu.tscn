@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://ckt3nkt4p2cwc"]
+
+[ext_resource type="Script" uid="uid://dotk0w554n20y" path="res://scripts/main_menu.gd" id="1_l6cm7"]
+
+[node name="MainMenu" type="CanvasLayer" unique_id=1864666325]
+script = ExtResource("1_l6cm7")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=2063569658]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1914469980]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1147737464]
+layout_mode = 2
+text = "Dungeon Survivor"
+
+[node name="Button" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1969410521]
+layout_mode = 2
+text = "JUGAR"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

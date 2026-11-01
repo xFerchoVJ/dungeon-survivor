@@ -18,6 +18,13 @@ var upgrades_applied: Dictionary[String, float] = {
 	"bonus_attack_speed": 0.0
 }
 
+func _ready() -> void:
+	var audio = AudioStreamPlayer.new()
+	audio.stream = preload("res://audio/music.wav")
+	audio.bus = "Music"
+	add_child(audio)
+	audio.play()
+
 func apply_upgrade(upgrade: Upgrade) -> void:
 	match upgrade.upgrade_type:
 		Upgrade.UpgradeType.DAMAGE:

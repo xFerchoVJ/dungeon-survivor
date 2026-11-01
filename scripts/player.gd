@@ -9,6 +9,9 @@ signal died
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var attack_cooldown: Timer = $AttackCooldown
 @onready var hit_cooldown: Timer = $HitCooldown
+@onready var hit_sword: AudioStreamPlayer2D = $HitSword
+@onready var player_damage: AudioStreamPlayer2D = $PlayerDamage
+@onready var player_death: AudioStreamPlayer2D = $PlayerDeath
 
 @export var speed: float = 60
 @export var damage: float = 50.0
@@ -54,6 +57,7 @@ func _physics_process(delta: float) -> void:
 		
 func attack() -> void:
 	if Input.is_action_just_pressed("attack") and attack_cooldown.is_stopped():
+		hit_sword.play()
 		animation_player.play("attack")
 		attack_cooldown.start()
 
@@ -79,13 +83,14 @@ func _on_hitbox_area_entered(area: Area2D) -> void:
 	if owner_node is Enemy:
 		owner_node.take_damage(damage, global_position)
 		
-func take_damage(qty: float, position_hitter: Vector2) -> void:
+func take_damage(qty: float, _position_hitter: Vector2) -> void:
 	if not hit_cooldown.is_stopped():
 		return
 		
 	if is_dead:
 		return
-		
+
+	player_damage.play()
 	health -= qty
 	health_changed.emit(health, max_health)
 	

@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://cviwcx2ohfspp" path="res://assets/Tilemap/tilemap_packed.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://s8bv7rtedy68" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bcxvarae5rucu" path="res://assets/Tiles/tile_0106.png" id="3_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://op125mu76prg" path="res://audio/sword_swing.wav" id="4_dqkch"]
+[ext_resource type="AudioStream" uid="uid://wdgsut6d8ok" path="res://audio/player_hurt.wav" id="5_qlg0r"]
+[ext_resource type="AudioStream" uid="uid://cmn0dqmpiglku" path="res://audio/player_death.wav" id="6_tuyoq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u0ya7"]
 size = Vector2(12, 15)
@@ -136,6 +139,18 @@ shape = SubResource("RectangleShape2D_wt34f")
 
 [node name="HitCooldown" type="Timer" parent="." unique_id=12572304]
 one_shot = true
+
+[node name="HitSword" type="AudioStreamPlayer2D" parent="." unique_id=587808076]
+stream = ExtResource("4_dqkch")
+bus = &"SFX"
+
+[node name="PlayerDamage" type="AudioStreamPlayer2D" parent="." unique_id=808417477]
+stream = ExtResource("5_qlg0r")
+bus = &"SFX"
+
+[node name="PlayerDeath" type="AudioStreamPlayer2D" parent="." unique_id=879679037]
+stream = ExtResource("6_tuyoq")
+bus = &"SFX"
 
 [connection signal="area_entered" from="SwordPivot/Sword/Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="HitCooldown" to="." method="_on_hit_cooldown_timeout"]
