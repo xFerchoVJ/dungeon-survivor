@@ -32,7 +32,7 @@
 | T18 | Pantalla "elige 1 de 3" con pausa | M5 | Completado |
 | T19 | Aplicar mejoras | M5 | Completado |
 | T20 | Segundo enemigo con embestida (recortable) | M6 | Completado |
-| T21 | Menú principal y sonido | M6 | No iniciado |
+| T21 | Menú principal y sonido | M6 | Completado |
 | C02 | Balance | M6 | No iniciado |
 | C03 | Revisión final | M6 | No iniciado |
 
@@ -284,5 +284,15 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** el `for` del spawn pasaba un `Array` a `range()`; el nombre de la constante tenía un typo (`SCENBE`).
 - **Dudas pendientes o conceptos por reforzar:** `var enemy_instance: Enemy;` se puede declarar y asignar en una línea, sin `;`. Ajustar los exports del charger (`charge_speed`, `recovery_duration`) en C02.
 - **Verificación o evidencia:** `room.gd` y `charger_enemy.gd` revisados en disco; probado en el editor (el aviso da tiempo de reaccionar, se frena contra paredes sin atravesarlas, matarlo durante el aviso deja la puerta y la pantalla de mejoras funcionando).
+
+### T21 — Menú principal y sonido
+- **Estado:** Completado (confirmado por mí el 2026-11-01)
+- **Fechas:** inicio / fin 2026-11-01
+- **Qué aprendí:** buses de audio (`SFX`, `Music`, `UI`) definidos en `default_bus_layout.tres` y asignados con la propiedad `bus` de cada reproductor; `AudioStreamPlayer2D` para efectos y `AudioStreamPlayer` para música; el loop de un `.wav` se configura en su `.import` (`loop_mode`); para que la muerte del enemigo no corte el sonido, se oculta y desactiva al enemigo y se hace `queue_free()` en la señal `finished` del reproductor; poner la música en el autoload para que no se reinicie al cambiar de escena; definir la escena principal en `run/main_scene`.
+- **Qué implementé por mi cuenta:** `scenes/main_menu.tscn` y `scripts/main_menu.gd` (escena principal, "JUGAR" llama a `GameState.reset()`); reproductores de sonido en `player.tscn` (espada, daño, muerte) y `enemy.tscn` (golpe, muerte); música en `GameState._ready()`; `_desactivate()` y `_on_enemy_death_finished()` en `enemy.gd`.
+- **Trabajo delegado:** ninguno.
+- **Dificultades:** el sonido de muerte se cortaba con `queue_free()` inmediato.
+- **Dudas pendientes o conceptos por reforzar:** el `CollisionShape2D` del cuerpo del enemigo sigue activo mientras suena su muerte (se puede desactivar con `set_deferred`); los buses están todos en 0 dB (balancear en C02); `ui_click.wav` y el bus `UI` no se usan; no hay fuente pixel; `var audio` sin tipar en `game_state.gd`; `_desactivate` → `_deactivate`; suenan daño y muerte juntos en el golpe letal.
+- **Verificación o evidencia:** diff revisado en disco; probado en el editor (menú como escena principal, cada sonido suena una vez por evento, música en loop, consola sin errores).
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
