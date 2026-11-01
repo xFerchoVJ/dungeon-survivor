@@ -8,6 +8,7 @@
 script = ExtResource("2_6nxsf")
 notice_distance = 40.0
 notice_duration = 0.6
+max_health = 160.0
 
 [node name="Sprite2D" parent="." index="0" unique_id=624853170]
 texture = ExtResource("2_rvwg5")
