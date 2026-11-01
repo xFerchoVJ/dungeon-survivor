@@ -33,8 +33,8 @@
 | T19 | Aplicar mejoras | M5 | Completado |
 | T20 | Segundo enemigo con embestida (recortable) | M6 | Completado |
 | T21 | Menú principal y sonido | M6 | Completado |
-| C02 | Balance | M6 | No iniciado |
-| C03 | Revisión final | M6 | No iniciado |
+| C02 | Balance | M6 | Completado |
+| C03 | Revisión final | M6 | Omitido (decisión mía) |
 
 ## Detalle por tarea
 Plantilla (se copia a cada tarea cuando se empieza):
@@ -294,5 +294,18 @@ Plantilla (se copia a cada tarea cuando se empieza):
 - **Dificultades:** el sonido de muerte se cortaba con `queue_free()` inmediato.
 - **Dudas pendientes o conceptos por reforzar:** el `CollisionShape2D` del cuerpo del enemigo sigue activo mientras suena su muerte (se puede desactivar con `set_deferred`); los buses están todos en 0 dB (balancear en C02); `ui_click.wav` y el bus `UI` no se usan; no hay fuente pixel; `var audio` sin tipar en `game_state.gd`; `_desactivate` → `_deactivate`; suenan daño y muerte juntos en el golpe letal.
 - **Verificación o evidencia:** diff revisado en disco; probado en el editor (menú como escena principal, cada sonido suena una vez por evento, música en loop, consola sin errores).
+
+### C02 — Balance
+- **Estado:** Completado (confirmado por mí el 2026-11-01)
+- **Fechas:** inicio / fin 2026-11-01
+- **Qué aprendí:** balancear con una sola variable por prueba; los golpes necesarios para matar dependen de umbrales (`vida / daño` redondeado hacia arriba), así que una mejora puede no tener efecto visible si no cruza un umbral (con 100 de vida, `damage_up` no cambiaba nada); los `@export` permiten ajustar sin tocar código; los volúmenes se balancean por bus y se afinan de oído.
+- **Qué implementé por mi cuenta:** ajuste de los buses en el editor (`Music` ≈ −10 dB, `SFX` en 0 dB).
+- **Trabajo delegado:** `max_health = 160.0` en `scenes/charger_enemy.tscn` (antes 100, heredado de `Enemy`), para que el charger sea más fuerte que el enemigo base y `damage_up` se note (4 golpes sin mejoras, 3 con `damage_up`, 2 con ambas mejoras de daño). Commit `5e6eeb7`.
+- **Dificultades:** ninguna.
+- **Dudas pendientes o conceptos por reforzar:** el daño y la velocidad de los enemigos, y el número de enemigos por cuarto, quedaron sin cambios; el enemigo base mantiene 100 de vida en todos los cuartos.
+- **Verificación o evidencia:** probado en el editor (cuartos 2 y 3 exigentes pero ganables, audio balanceado).
+
+### C03 — Revisión final
+- **Estado:** Omitido (decisión mía el 2026-11-01): considero que el proyecto de aprendizaje está bien como está. La DoD no se recorrió punto por punto.
 
 *(Las demás secciones por tarea se añaden aquí conforme se trabajan.)*
